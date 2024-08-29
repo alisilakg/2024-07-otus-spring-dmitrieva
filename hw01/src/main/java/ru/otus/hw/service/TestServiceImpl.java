@@ -21,14 +21,18 @@ public class TestServiceImpl implements TestService {
         ioService.printFormattedLine("Please answer the questions below%n");
         ioService.printLine("");
         final List<Question> questions = questionDao.findAll();
+        printQuestions(questions);
+    }
+
+    private void printQuestions(List<Question> questions) {
         for (int i = 0; i < questions.size(); i++) {
             final Question question = questions.get(i);
-            ioService.printFormattedLine("Question %d:", i + 1);
-            ioService.printLine(question.text());
+            ioService.printLine("");
+            ioService.printFormattedLine("Question %d: %s", i + 1, question.text());
             final int answersSize = question.answers().size();
             for (int j = 0; j < answersSize; j++) {
                 final String textAnswer = ofNullable(question.answers().get(j)).map(Answer::text).orElse(null);
-                ioService.printFormattedLine("- %d Answer: %s:", j + 1, textAnswer);
+                ioService.printFormattedLine("Answer %d: %s", j + 1, textAnswer);
             }
         }
     }
