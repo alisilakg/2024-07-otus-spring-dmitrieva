@@ -29,12 +29,16 @@ public class TestServiceImpl implements TestService {
             if (Objects.nonNull(question)) {
                 ioService.printLine("");
                 ioService.printFormattedLine("Question %d: %s", questionCounter++, question.text());
+                printAnswers(question.answers());
             }
-            int answerCounter = 1;
-            for (Answer answer : question.answers()) {
-                if (Objects.nonNull(answer)) {
-                    ioService.printFormattedLine("Answer %d: %s", answerCounter++, answer.text());
-                }
+        }
+    }
+
+    private void printAnswers(List<Answer> answers) {
+        int answerCounter = 1;
+        for (Answer answer : answers) {
+            if (Objects.nonNull(answer)) {
+                ioService.printFormattedLine("Answer %d: %s", answerCounter++, answer.text());
             }
         }
     }
