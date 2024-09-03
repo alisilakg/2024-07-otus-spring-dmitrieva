@@ -26,16 +26,16 @@ public class CsvQuestionDao implements QuestionDao {
             if (Objects.isNull(inputStream)) {
                 throw new QuestionReadException("file not found! " + fileName);
             }
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-
-            return new CsvToBeanBuilder<QuestionDto>(inputStreamReader)
-                    .withType(QuestionDto.class)
-                    .withSeparator(';')
-                    .withSkipLines(1)
-                    .build()
-                    .parse()
-                    .stream()
-                    .map(QuestionDto::toDomainObject).toList();
+            try (InputStreamReader inputStreamReader = new InputStreamReader(inputStream)) {
+                return new CsvToBeanBuilder<QuestionDto>(inputStreamReader)
+                        .withType(QuestionDto.class)
+                        .withSeparator(';')
+                        .withSkipLines(1)
+                        .build()
+                        .parse()
+                        .stream()
+                        .map(QuestionDto::toDomainObject).toList();
+            }
         } catch (IOException e) {
             throw new QuestionReadException("file not read! " + fileName, e);
         }

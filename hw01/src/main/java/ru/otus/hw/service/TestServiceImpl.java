@@ -6,8 +6,7 @@ import ru.otus.hw.domain.Answer;
 import ru.otus.hw.domain.Question;
 
 import java.util.List;
-
-import static java.util.Optional.ofNullable;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 public class TestServiceImpl implements TestService {
@@ -25,14 +24,17 @@ public class TestServiceImpl implements TestService {
     }
 
     private void printQuestions(List<Question> questions) {
-        for (int i = 0; i < questions.size(); i++) {
-            final Question question = questions.get(i);
-            ioService.printLine("");
-            ioService.printFormattedLine("Question %d: %s", i + 1, question.text());
-            final int answersSize = question.answers().size();
-            for (int j = 0; j < answersSize; j++) {
-                final String textAnswer = ofNullable(question.answers().get(j)).map(Answer::text).orElse(null);
-                ioService.printFormattedLine("Answer %d: %s", j + 1, textAnswer);
+        int questionCounter = 1;
+        for (Question question : questions) {
+            if (Objects.nonNull(question)) {
+                ioService.printLine("");
+                ioService.printFormattedLine("Question %d: %s", questionCounter++, question.text());
+            }
+            int answerCounter = 1;
+            for (Answer answer : question.answers()) {
+                if (Objects.nonNull(answer)) {
+                    ioService.printFormattedLine("Answer %d: %s", answerCounter++, answer.text());
+                }
             }
         }
     }
