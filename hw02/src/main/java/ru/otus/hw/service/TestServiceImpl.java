@@ -32,23 +32,19 @@ public class TestServiceImpl implements TestService {
                 ioService.printLine("");
                 ioService.printFormattedLine("Question %d: %s", questionCounter++, question.text());
                 var answers = question.answers();
-                var rightAnswer = printAnswers(answers);
+                var rightAnswer = getRightAnswerNumber(answers);
                 int answerStudent = ioService.readIntForRangeWithPrompt(
                         1,
                         answers.size() - 1,
                         "Enter the correct answer number:",
                         "You entered a number that doesn't exist. Try again");
-                var isAnswerValid = false;
-                if (answerStudent == rightAnswer) {
-                    isAnswerValid = true;
-                }
-                testResult.applyAnswer(question, isAnswerValid);
+                testResult.applyAnswer(question, Objects.equals(answerStudent, rightAnswer));
             }
         }
         return testResult;
     }
 
-    private int printAnswers(List<Answer> answers) {
+    private int getRightAnswerNumber(List<Answer> answers) {
         int answerCounter = 1;
         int rightAnswer = 0;
         for (Answer answer : answers) {
